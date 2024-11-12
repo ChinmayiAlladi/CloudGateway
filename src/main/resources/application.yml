@@ -1,0 +1,31 @@
+spring:
+  application: 
+    name: CloudGateway
+  main:
+    web-application-type: reactive
+
+  cloud:
+   gateway:
+     routes:
+       - id: REMINDERSERVICE
+         uri: lb://REMINDERSERVICE
+         predicates:
+           - Path=/reminders/**
+         filters:
+           - name: AuthenticationFilter
+       - id: RANDOMSERVICE
+         uri: lb://RANDOMSERVICE
+         predicates:
+           - Path=/random/**
+         filters:
+           - name: AuthenticationFilter
+       - id: IDENTITYSERVICE
+         uri: lb://IDENTITYSERVICE
+         predicates:
+           - Path=/auth/**
+         filters:
+           - name: AuthenticationFilter
+eureka: 
+  client:
+    service-url: 
+      default-zone: http://localhost:8761/eureka/
